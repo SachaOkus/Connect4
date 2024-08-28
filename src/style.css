@@ -95,3 +95,22 @@ button:focus-visible {
   }
 }
 
+.connect4-board {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr); /* Create 7 equal-width columns */
+  grid-gap: 5px; /* Gap between the cells */
+  width: 100%;
+  margin: 0 auto;
+  padding: 10px;
+  background-color: #333;
+  border-radius: 10px;
+}
+
+
+.board-cell {
+  width: 100%;
+  padding-top: 100%; /* This keeps the cells square */
+  background-color: white;
+  border-radius: 50%;
+  box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.5);
+}
