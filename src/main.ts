@@ -1,15 +1,15 @@
-
-
 class Connect4Game {
     private rows: number;
     private cols: number;
     private boardElement: HTMLElement;
     private currentPlayer: number; // 1 for player1, 2 for player2
+    private board: number[][]; // 2D array to represent the board state
 
     constructor(rows: number = 6, cols: number = 7) {
         this.rows = rows;
         this.cols = cols;
         this.currentPlayer = 1; // Player 1 starts first
+        this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
         this.boardElement = document.getElementById('connect4-board')!;
         console.log('Connect4Game initialized with', this.rows, 'rows and', this.cols, 'columns.');
         this.createGrid();
@@ -57,7 +57,21 @@ class Connect4Game {
             const cell = this.boardElement.querySelector(`[data-row="${r}"][data-col="${col}"]`) as HTMLElement;
             if (!cell.classList.contains('player1') && !cell.classList.contains('player2')) {
                 cell.classList.add(this.currentPlayer === 1 ? 'player1' : 'player2');
+                this.board[r][col] = this.currentPlayer; // Update the board array
                 console.log(`Placed token for player ${this.currentPlayer} at row ${r}, column ${col}`);
+                
+                if (this.checkWin(r, col)) {
+                    console.log(`Player ${this.currentPlayer} wins!`);
+                    this.endGame(`Player ${this.currentPlayer} wins!`);
+                    return;
+                }
+
+                if (this.checkDraw()) {
+                    console.log('Game is a draw!');
+                    this.endGame('Draw!');
+                    return;
+                }
+
                 this.switchPlayer();
                 break;
             }
@@ -68,6 +82,43 @@ class Connect4Game {
     private switchPlayer(): void {
         this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
         console.log('Switched to player', this.currentPlayer);
+    }
+
+    // Function to check if the current player has won
+    private checkWin(row: number, col: number): boolean {
+        return (
+            this.checkDirection(row, col, 1, 0) ||  // Horizontal
+            this.checkDirection(row, col, 0, 1) ||  // Vertical
+            this.checkDirection(row, col, 1, 1) ||  // Diagonal /
+            this.checkDirection(row, col, 1, -1)    // Diagonal \
+        );
+    }
+
+    // Function to check a specific direction for a win
+    private checkDirection(row: number, col: number, rowDir: number, colDir: number): boolean {
+        let count = 0;
+        for (let i = -3; i <= 3; i++) {
+            const r = row + i * rowDir;
+            const c = col + i * colDir;
+            if (r >= 0 && r < this.rows && c >= 0 && c < this.cols && this.board[r][c] === this.currentPlayer) {
+                count++;
+                if (count === 4) return true;
+            } else {
+                count = 0;
+            }
+        }
+        return false;
+    }
+
+    // Function to check if the game is a draw
+    private checkDraw(): boolean {
+        return this.board[0].every(cell => cell !== 0);
+    }
+
+    // Function to end the game
+    private endGame(message: string): void {
+        alert(message);
+        this.boardElement.removeEventListener('click', this.addEventListeners);
     }
 }
 
