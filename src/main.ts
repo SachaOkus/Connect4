@@ -4,6 +4,8 @@ class Connect4Game {
     private boardElement: HTMLElement;
     private currentPlayer: number; // 1 for player1, 2 for player2
     private board: number[][]; // 2D array to represent the board state
+    private player1Score: number = 0; // Score tracking for player 1
+    private player2Score: number = 0; // Score tracking for player 2
 
     constructor(rows: number = 6, cols: number = 7) {
         this.rows = rows;
@@ -14,6 +16,7 @@ class Connect4Game {
         console.log('Connect4Game initialized with', this.rows, 'rows and', this.cols, 'columns.');
         this.createGrid();
         this.addEventListeners();
+        this.updateScore();
     }
 
     // Function to create the grid
@@ -32,16 +35,25 @@ class Connect4Game {
         console.log('Grid created with', this.rows * this.cols, 'cells.');
     }
 
-    // Function to add event listeners to each column
+    // Function to add event listeners to each column and buttons
     private addEventListeners(): void {
         console.log('Adding event listeners...');
-        this.boardElement.addEventListener('click', (event) => {
-            const target = event.target as HTMLElement;
-            if (target && target.classList.contains('board-cell')) {
-                console.log('Cell clicked:', target.dataset.row, target.dataset.col);
-                this.handleCellClick(target);
-            }
-        });
+        // Add click event listener to the board element only once
+        this.boardElement.removeEventListener('click', this.handleBoardClick); // Ensure no duplicate listeners
+        this.boardElement.addEventListener('click', this.handleBoardClick);
+
+        // Event listener for the New Game button
+        const newGameButton = document.getElementById('new-game')!;
+        newGameButton.addEventListener('click', () => this.resetGame());
+    }
+
+    // Event handler function for board clicks
+    private handleBoardClick = (event: MouseEvent) => {
+        const target = event.target as HTMLElement;
+        if (target && target.classList.contains('board-cell')) {
+            console.log('Cell clicked:', target.dataset.row, target.dataset.col);
+            this.handleCellClick(target);
+        }
     }
 
     // Function to handle the click event on a cell
@@ -62,6 +74,7 @@ class Connect4Game {
                 
                 if (this.checkWin(r, col)) {
                     console.log(`Player ${this.currentPlayer} wins!`);
+                    this.updateScore(this.currentPlayer);
                     this.endGame(`Player ${this.currentPlayer} wins!`);
                     return;
                 }
@@ -118,7 +131,28 @@ class Connect4Game {
     // Function to end the game
     private endGame(message: string): void {
         alert(message);
-        this.boardElement.removeEventListener('click', this.addEventListeners);
+        this.boardElement.removeEventListener('click', this.handleBoardClick); // Remove event listener after the game ends
+    }
+
+    // Function to reset the game board
+    private resetGame(): void {
+        console.log('Resetting the game...');
+        this.currentPlayer = 1; // Player 1 starts first
+        this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+        this.createGrid(); // Recreate the grid
+        this.addEventListeners(); // Re-add the event listeners
+    }
+
+    // Function to update the score
+    private updateScore(winner?: number): void {
+        if (winner === 1) {
+            this.player1Score++;
+        } else if (winner === 2) {
+            this.player2Score++;
+        }
+
+        const scoreElement = document.getElementById('score')!;
+        scoreElement.textContent = `Player One  ${this.player1Score} - ${this.player2Score}  Player Two`;
     }
 }
 
