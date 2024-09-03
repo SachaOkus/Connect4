@@ -137,7 +137,72 @@ body {
   letter-spacing: 0.05em; /* Slight letter spacing for better readability */
 }
 
+.end-screen-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  animation: fadeIn 0.5s ease-in-out;
+}
 
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+.end-screen-content {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 15px;
+  text-align: center;
+  box-shadow: 0 0 30px rgba(0, 0, 0, 0.7);
+  max-width: 400px;
+  width: 90%;
+  animation: slideUp 0.5s ease-out;
+}
+
+@keyframes slideUp {
+  from { transform: translateY(50px); opacity: 0; }
+  to { transform: translateY(0); opacity: 1; }
+}
+
+.end-screen-icon {
+  font-size: 4em; /* Large icon for visual appeal */
+  margin-bottom: 20px;
+}
+
+.end-screen-message {
+  font-size: 2em;
+  font-weight: bold;
+  margin-bottom: 20px;
+  color: #213547;
+}
+
+.restart-button {
+  padding: 15px 30px;
+  font-size: 1.5em;
+  border: none;
+  border-radius: 5px;
+  background-color: #213547;
+  color: white;
+  cursor: pointer;
+  transition: background-color 0.3s, transform 0.3s;
+}
+
+.restart-button:hover {
+  background-color: #1a2b3c;
+  transform: scale(1.05);
+}
 
 /* Responsive adjustments */
 @media (min-width: 1024px) {
