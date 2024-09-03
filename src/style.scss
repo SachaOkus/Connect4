@@ -142,4 +142,43 @@ body {
   }
 }
 
+@media (max-width: 768px) {
+  .connect4-title {
+    font-size: 1.8em;
+  }
 
+  .control-button {
+    font-size: 0.9em;
+    padding: 8px 16px;
+    margin: 0 5px;
+  }
+
+  .connect4-controls {
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .control-button {
+    width: 100%;
+    margin-bottom: 10px;
+  }
+
+  .connect4-board {
+    grid-gap: 4px; /* Adjust grid gap for smaller screens */
+  }
+}
+
+@media (max-width: 480px) {
+  .connect4-title {
+    font-size: 1.5em;
+  }
+
+  .control-button {
+    font-size: 0.8em;
+    padding: 6px 12px;
+  }
+
+  .connect4-board {
+    grid-gap: 3px; /* Further adjust grid gap for very small screens */
+  }
+}
