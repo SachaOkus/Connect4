@@ -119,6 +119,15 @@ body {
   background-color: #1a2b3c;
 }
 
+/* Adjust the width for the info button to fit nicely next to the New Game button */
+.control-button.info-button {
+  max-width: 50px;
+  text-align: center;
+  padding: 10px 15px;
+  font-size: 1.2em;
+  flex: 0 0 auto; /* Do not allow this button to flex-grow */
+  margin-left: 0; /* Remove extra margin to align closely with the New Game button */
+}
 .connect4-score {
   display: flex;
   justify-content: center; /* Center the content */
@@ -204,29 +213,6 @@ body {
   transform: scale(1.05);
 }
 
-/* Info Button Styles */
-.info-button {
-  position: fixed;
-  bottom: 20px;
-  left: 20px;
-  width: 50px;
-  height: 50px;
-  background-color: #213547;
-  color: white;
-  font-size: 1.5em;
-  border: none;
-  border-radius: 50%;
-  box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
-  cursor: pointer;
-  text-align: center;
-  line-height: 50px;
-  transition: background-color 0.3s, transform 0.3s;
-}
-
-.info-button:hover {
-  background-color: #1a2b3c;
-  transform: scale(1.1);
-}
 
 /* Rules Modal Styles */
 .rules-modal {
