@@ -1,0 +1,20 @@
+// _scoreboard.scss
+
+.connect4__scoreboard {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    max-width: 500px;
+    margin-bottom: 20px;
+    padding: 10px 20px;
+    background-color: $primary-color;
+    color: white;
+    border-radius: 8px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+    font-size: 1.2em;
+    font-weight: bold;
+    text-align: center;
+    letter-spacing: 0.05em;
+  }
+  
