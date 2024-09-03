@@ -6,6 +6,7 @@ class Connect4Game {
     private board: number[][]; // 2D array to represent the board state
     private player1Score: number = 0; // Score tracking for player 1
     private player2Score: number = 0; // Score tracking for player 2
+    private newGameButton: HTMLElement;
 
     constructor(rows: number = 6, cols: number = 7) {
         this.rows = rows;
@@ -13,6 +14,7 @@ class Connect4Game {
         this.currentPlayer = 1; // Player 1 starts first
         this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
         this.boardElement = document.getElementById('connect4-board')!;
+        this.newGameButton = document.getElementById('new-game')!;
         this.createGrid();
         this.addEventListeners();
     }
@@ -31,10 +33,14 @@ class Connect4Game {
         }
     }
 
-    // Function to add event listeners to each column
+    // Function to add event listeners to the board and buttons
     private addEventListeners(): void {
         this.boardElement.removeEventListener('click', this.handleBoardClick); // Remove any existing listeners
         this.boardElement.addEventListener('click', this.handleBoardClick);
+
+        // Attach event listener to the "New Game" button
+        this.newGameButton.removeEventListener('click', this.resetGame);
+        this.newGameButton.addEventListener('click', this.resetGame);
     }
 
     // Event handler function for board clicks
@@ -85,7 +91,7 @@ class Connect4Game {
     // Function to update the scoreboard display
     private updateScoreboard(): void {
         const scoreElement = document.getElementById('score')!;
-        scoreElement.textContent = `Player One ${this.player1Score} - ${this.player2Score} Player Two`;
+        scoreElement.textContent = `Player 1 ${this.player1Score} - ${this.player2Score} Player 2`;
     }
 
     // Function to check if the current player has won
@@ -171,7 +177,7 @@ class Connect4Game {
     }
 
     // Function to reset the game board
-    private resetGame(): void {
+    private resetGame = (): void => {
         const overlay = document.querySelector('.end-screen-overlay');
         if (overlay) {
             overlay.remove();
