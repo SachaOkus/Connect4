@@ -7,6 +7,7 @@ class Connect4Game {
     private player1Score: number = 0; // Score tracking for player 1
     private player2Score: number = 0; // Score tracking for player 2
     private newGameButton: HTMLElement;
+    
 
     constructor(rows: number = 6, cols: number = 7) {
         this.rows = rows;
@@ -17,6 +18,7 @@ class Connect4Game {
         this.newGameButton = document.getElementById('new-game')!;
         this.createGrid();
         this.addEventListeners();
+        this.addInfoButtonEvent();
     }
 
     // Function to create the grid
@@ -174,6 +176,27 @@ class Connect4Game {
 
         // Append the overlay to the body
         document.body.appendChild(overlay);
+    }
+
+    private addInfoButtonEvent(): void {
+        const infoButton = document.getElementById('info-button')!;
+        const rulesModal = document.getElementById('rules-modal')!;
+        const closeRules = document.getElementById('close-rules')!;
+
+        infoButton.addEventListener('click', () => {
+            rulesModal.classList.add('active'); // Show the modal
+        });
+
+        closeRules.addEventListener('click', () => {
+            rulesModal.classList.remove('active'); // Hide the modal
+        });
+
+        // Close the modal when clicking outside of the content
+        window.addEventListener('click', (event) => {
+            if (event.target === rulesModal) {
+                rulesModal.classList.remove('active');
+            }
+        });
     }
 
     // Function to reset the game board
