@@ -183,18 +183,20 @@ class Connect4Game {
         const rulesModal = document.getElementById('rules-modal')!;
         const closeRules = document.getElementById('close-rules')!;
 
+        // Show the modal when the info button is clicked
         infoButton.addEventListener('click', () => {
             rulesModal.classList.add('active'); // Show the modal
         });
 
+        // Close the modal when the close button is clicked
         closeRules.addEventListener('click', () => {
             rulesModal.classList.remove('active'); // Hide the modal
         });
 
-        // Close the modal when clicking outside of the content
+        // Close the modal when clicking outside of the modal content
         window.addEventListener('click', (event) => {
             if (event.target === rulesModal) {
-                rulesModal.classList.remove('active');
+                rulesModal.classList.remove('active'); // Hide the modal
             }
         });
     }
