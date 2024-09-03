@@ -13,16 +13,13 @@ class Connect4Game {
         this.currentPlayer = 1; // Player 1 starts first
         this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
         this.boardElement = document.getElementById('connect4-board')!;
-        console.log('Connect4Game initialized with', this.rows, 'rows and', this.cols, 'columns.');
         this.createGrid();
         this.addEventListeners();
-        this.updateScore();
     }
 
     // Function to create the grid
     private createGrid(): void {
         this.boardElement.innerHTML = ''; // Clear any existing content
-        console.log('Creating grid...');
         for (let r = 0; r < this.rows; r++) {
             for (let c = 0; c < this.cols; c++) {
                 const cell = document.createElement('div');
@@ -32,26 +29,18 @@ class Connect4Game {
                 this.boardElement.appendChild(cell);
             }
         }
-        console.log('Grid created with', this.rows * this.cols, 'cells.');
     }
 
-    // Function to add event listeners to each column and buttons
+    // Function to add event listeners to each column
     private addEventListeners(): void {
-        console.log('Adding event listeners...');
-        // Add click event listener to the board element only once
-        this.boardElement.removeEventListener('click', this.handleBoardClick); // Ensure no duplicate listeners
+        this.boardElement.removeEventListener('click', this.handleBoardClick); // Remove any existing listeners
         this.boardElement.addEventListener('click', this.handleBoardClick);
-
-        // Event listener for the New Game button
-        const newGameButton = document.getElementById('new-game')!;
-        newGameButton.addEventListener('click', () => this.resetGame());
     }
 
     // Event handler function for board clicks
     private handleBoardClick = (event: MouseEvent) => {
         const target = event.target as HTMLElement;
         if (target && target.classList.contains('board-cell')) {
-            console.log('Cell clicked:', target.dataset.row, target.dataset.col);
             this.handleCellClick(target);
         }
     }
@@ -59,42 +48,44 @@ class Connect4Game {
     // Function to handle the click event on a cell
     private handleCellClick(cell: HTMLElement): void {
         const col = parseInt(cell.dataset.col!);
-        console.log('Placing token in column:', col);
         this.placeToken(col);
     }
 
     // Function to place a token in the correct row in the clicked column
     private placeToken(col: number): void {
-        for (let r = this.rows - 1; r >= 0; r--) { // Start from the bottom row
+        for (let r = this.rows - 1; r >= 0; r--) {
             const cell = this.boardElement.querySelector(`[data-row="${r}"][data-col="${col}"]`) as HTMLElement;
             if (!cell.classList.contains('player1') && !cell.classList.contains('player2')) {
                 cell.classList.add(this.currentPlayer === 1 ? 'player1' : 'player2');
-                this.board[r][col] = this.currentPlayer; // Update the board array
-                console.log(`Placed token for player ${this.currentPlayer} at row ${r}, column ${col}`);
-                
+                this.board[r][col] = this.currentPlayer;
+
                 if (this.checkWin(r, col)) {
-                    console.log(`Player ${this.currentPlayer} wins!`);
-                    this.updateScore(this.currentPlayer);
-                    this.endGame(`Player ${this.currentPlayer} wins!`);
-                    return;
+                    this.incrementScore();
+                    this.endGame(false); // Player has won
+                } else if (this.checkDraw()) {
+                    this.endGame(true); // It's a draw
+                } else {
+                    this.switchPlayer();
                 }
-
-                if (this.checkDraw()) {
-                    console.log('Game is a draw!');
-                    this.endGame('Draw!');
-                    return;
-                }
-
-                this.switchPlayer();
                 break;
             }
         }
     }
 
-    // Function to switch the current player
-    private switchPlayer(): void {
-        this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
-        console.log('Switched to player', this.currentPlayer);
+    // Function to increment the scoreboard
+    private incrementScore(): void {
+        if (this.currentPlayer === 1) {
+            this.player1Score++;
+        } else {
+            this.player2Score++;
+        }
+        this.updateScoreboard();
+    }
+
+    // Function to update the scoreboard display
+    private updateScoreboard(): void {
+        const scoreElement = document.getElementById('score')!;
+        scoreElement.textContent = `Player One ${this.player1Score} - ${this.player2Score} Player Two`;
     }
 
     // Function to check if the current player has won
@@ -128,31 +119,68 @@ class Connect4Game {
         return this.board[0].every(cell => cell !== 0);
     }
 
+    // Function to switch the current player
+    private switchPlayer(): void {
+        this.currentPlayer = this.currentPlayer === 1 ? 2 : 1;
+    }
+
     // Function to end the game
-    private endGame(message: string): void {
-        alert(message);
-        this.boardElement.removeEventListener('click', this.handleBoardClick); // Remove event listener after the game ends
+    private endGame(isDraw: boolean = false): void {
+        if (isDraw) {
+            this.displayEndScreen('It\'s a Draw!');
+        } else {
+            this.displayEndScreen(`Player ${this.currentPlayer} Wins!`);
+        }
+    }
+
+    // Function to display the win or draw screen
+    private displayEndScreen(message: string): void {
+        const overlay = document.createElement('div');
+        overlay.classList.add('end-screen-overlay');
+
+        // Create a container for the content
+        const contentContainer = document.createElement('div');
+        contentContainer.classList.add('end-screen-content');
+
+        // Optionally, add an icon or image (e.g., a trophy or confetti)
+        const icon = document.createElement('div');
+        icon.classList.add('end-screen-icon');
+        icon.innerHTML = '🏆'; // This can be an emoji or an image tag with a src attribute
+
+        // Create the message box
+        const messageBox = document.createElement('div');
+        messageBox.classList.add('end-screen-message');
+        messageBox.innerText = message;
+
+        // Create the restart button
+        const restartButton = document.createElement('button');
+        restartButton.classList.add('restart-button');
+        restartButton.innerText = 'Play Again';
+        restartButton.addEventListener('click', () => this.resetGame());
+
+        // Append elements to the content container
+        contentContainer.appendChild(icon);
+        contentContainer.appendChild(messageBox);
+        contentContainer.appendChild(restartButton);
+
+        // Append the content container to the overlay
+        overlay.appendChild(contentContainer);
+
+        // Append the overlay to the body
+        document.body.appendChild(overlay);
     }
 
     // Function to reset the game board
     private resetGame(): void {
-        console.log('Resetting the game...');
-        this.currentPlayer = 1; // Player 1 starts first
-        this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
-        this.createGrid(); // Recreate the grid
-        this.addEventListeners(); // Re-add the event listeners
-    }
-
-    // Function to update the score
-    private updateScore(winner?: number): void {
-        if (winner === 1) {
-            this.player1Score++;
-        } else if (winner === 2) {
-            this.player2Score++;
+        const overlay = document.querySelector('.end-screen-overlay');
+        if (overlay) {
+            overlay.remove();
         }
 
-        const scoreElement = document.getElementById('score')!;
-        scoreElement.textContent = `Player One  ${this.player1Score} - ${this.player2Score}  Player Two`;
+        this.currentPlayer = 1; 
+        this.board = Array.from({ length: this.rows }, () => Array(this.cols).fill(0));
+        this.createGrid();
+        this.addEventListeners();
     }
 }
 
