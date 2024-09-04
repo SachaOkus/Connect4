@@ -21,6 +21,8 @@ class Connect4Game {
         this.addInfoButtonEvent();
     }
 
+    public startGame(): any {}
+
     // Function to create the grid
     private createGrid(): void {
         this.boardElement.innerHTML = ''; // Clear any existing content
@@ -216,3 +218,4 @@ class Connect4Game {
 }
 
 const game = new Connect4Game();
+game.startGame()
