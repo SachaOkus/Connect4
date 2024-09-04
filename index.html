@@ -1,43 +1,50 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Sacha Okus | Connect 4</title>
-    <link rel="stylesheet" href="src/styles/main.css">
-</head>
-<body>
+    <link rel="stylesheet" href="src/styles/main.css" />
+  </head>
+  <body>
     <div class="connect4-container">
-        <h1 class="connect4-title">Connect 4 Game</h1>
+      <h1 class="connect4-title">Connect 4 Game</h1>
 
-        <!--ScoreBoard-->
-        <div id="score" class="connect4-score">Player 1   0 - 0   Player 2</div>
-        
-        <!-- Game Board -->
-        <div id="connect4-board" class="connect4-board">
+      <!--ScoreBoard-->
+      <div id="score" class="connect4-score">Player 1 0 - 0 Player 2</div>
 
-        </div>
-        
-        <!-- Game Controls -->
-        <div class="connect4-controls">            <button id="info-button" class="control-button info-button">i</button>
-            <button id="new-game" class="control-button">Reset Game</button>
-        </div>
+      <!-- Game Board -->
+      <div id="connect4-board" class="connect4-board"></div>
 
-
+      <!-- Game Controls -->
+      <div class="connect4-controls">
+        <button id="info-button" class="control-button info-button">i</button>
+        <button id="new-game" class="control-button">Reset Game</button>
+      </div>
+    </div>
     <!-- Rules Modal (initially hidden) -->
     <div id="rules-modal" class="rules-modal">
-        <div class="rules-modal-content">
-            <span id="close-rules" class="close-rules">&times;</span>
-            <h2>Connect 4 Rules</h2>
-            <ul>
-                <li>Players will take turns to drop one of their tokens into one of the columns.</li>
-                <li>The first player to connect four of their tokens in a row vertically, horizontally, or diagonally wins.</li>
-                <li>If all slots are filled and no player has four in a row, the game ends in a draw.</li>
-                <li>Click the 'Reset Game' button to start a new round.</li>
-            </ul>
-        </div>
+      <div class="rules-modal-content">
+        <span id="close-rules" class="close-rules">&times;</span>
+        <h2>Connect 4 Rules</h2>
+        <ul>
+          <li>
+            Players will take turns to drop one of their tokens into one of the
+            columns.
+          </li>
+          <li>
+            The first player to connect four of their tokens in a row
+            vertically, horizontally, or diagonally wins.
+          </li>
+          <li>
+            If all slots are filled and no player has four in a row, the game
+            ends in a draw.
+          </li>
+          <li>Click the 'Reset Game' button to start a new round.</li>
+        </ul>
+      </div>
     </div>
 
-    <script src="./src/main.ts"></script>
-</body>
+    <script type="module" src="./src/main.ts"></script>
+  </body>
 </html>
